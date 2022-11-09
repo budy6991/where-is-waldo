@@ -1,24 +1,24 @@
 import { useState } from "react";
 import "./App.css";
+import waldo from "./assets/where-is-waldo.jpg";
+import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
 
 function App() {
-  const [waldo, setWaldo] = useState("");
+  const showCoordinates = (e) => {
+    const x = Math.floor(e.clientX * 10000) / 100;
+    const y = Math.floor(e.clientY * 10000) / 100;
+    console.log(window.innerWidth / x);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="w-full h-screen flex flex-col justify-between">
+      <Header />
+      <div onClick={showCoordinates}>
+        <img src={waldo} className="w-full h-4/12" />
+      </div>
+
+      <Footer />
     </div>
   );
 }
