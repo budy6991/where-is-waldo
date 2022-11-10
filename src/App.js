@@ -24,6 +24,9 @@ function App() {
 
   const showCoordinates = (e) => {
     setMarkerX(e.clientX - 24);
+
+    // We get a reference to the parent element and we substract it from the current window, so on click we show the pointer exactly where it should be, since e.clientX only shows us relatively to the total screen.
+
     setMarkerY(e.clientY - e.target.parentElement.offsetTop - 24);
 
     const x = Math.floor(e.clientX * 10000) / 100;
