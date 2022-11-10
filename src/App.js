@@ -5,6 +5,8 @@ import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Routes, Route } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Game } from "./components/Game";
+import { Home } from "./components/Home";
 
 function App() {
   return (
@@ -13,6 +15,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="game" element={<Game />} />
         </Routes>
         <Footer />
       </Router>

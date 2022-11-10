@@ -1,4 +1,7 @@
 import React from "react";
+import { useState } from "react";
+
+import waldo from "../assets/where-is-waldo.jpg";
 
 export const Game = () => {
   const [x, setX] = useState(null);
