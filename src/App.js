@@ -1,20 +1,17 @@
-import { useState } from "react";
-import "./App.css";
-import waldo from "./assets/where-is-waldo.jpg";
-import { Footer } from "./components/Footer";
-import { Header } from "./components/Header";
 import { Routes, Route } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Game } from "./components/Game";
 import { Home } from "./components/Home";
+import { useState } from "react";
 
 function App() {
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
   return (
     <div className="w-full h-screen flex flex-col justify-between">
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="game" element={<Game />} />
+          <Route path="game" element={<Game innerHeight={innerHeight} />} />
         </Routes>
       </Router>
     </div>
