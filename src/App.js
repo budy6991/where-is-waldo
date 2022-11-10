@@ -12,12 +12,10 @@ function App() {
   return (
     <div className="w-full h-screen flex flex-col justify-between">
       <Router>
-        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="game" element={<Game />} />
         </Routes>
-        <Footer />
       </Router>
     </div>
   );

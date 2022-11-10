@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 
 import waldo from "../assets/where-is-waldo.jpg";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
 
 export const Game = () => {
   const [x, setX] = useState(null);
@@ -37,12 +39,16 @@ export const Game = () => {
     }
   };
   return (
-    <div onClick={showCoordinates} className="relative">
-      <img src={waldo} className="w-full h-4/12" />
-      <div
-        className="w-12 h-12 rounded-full border-2 border-red-500 bg-transparent absolute self-center"
-        style={{ top: `${markerY}px`, left: `${markerX}px` }}
-      ></div>
-    </div>
+    <>
+      <Header />
+      <div onClick={showCoordinates} className="relative">
+        <img src={waldo} className="w-full h-4/12" />
+        <div
+          className="w-12 h-12 rounded-full border-2 border-red-500 bg-transparent absolute self-center"
+          style={{ top: `${markerY}px`, left: `${markerX}px` }}
+        ></div>
+      </div>
+      <Footer />
+    </>
   );
 };
