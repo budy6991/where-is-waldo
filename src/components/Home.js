@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 export const Home = () => {
   const navigate = useNavigate();
 
+  //For now we won't add any functionality, after building theh whole logic, we should interact with the database to show on Home the score history.
+
   return (
     <div className="w-full h-full flex justify-center items-center">
       <button
