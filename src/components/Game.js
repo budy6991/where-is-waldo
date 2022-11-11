@@ -19,32 +19,18 @@ export const Game = () => {
   };
 
   const showCoordinates = (e) => {
-    setMarkerX(e.clientX - 24);
+    // setMarkerX(e.clientX - 24);
 
-    // We get a reference to the parent element and we substract it from the current window, so on click we show the pointer exactly where it should be, since e.clientX only shows us relatively to the total screen.
+    // // We get a reference to the parent element and we substract it from the current window, so on click we show the pointer exactly where it should be, since e.clientX only shows us relatively to the total screen.
 
-    setMarkerY(e.clientY - e.target.parentElement.offsetTop - 24);
+    // setMarkerY(e.clientY - e.target.parentElement.offsetTop - 24);
 
-    const x = Math.floor(e.clientX * 10000) / 100;
-    const y = Math.floor(e.clientY * 10000) / 100;
+    const x = Math.floor((e.clientX / window.innerWidth) * 100);
+    // const y = Math.floor(e.clientY * 10000) / 100;
+    const y = Math.floor((e.clientY / window.innerHeight) * 100);
 
-    // console.log(window.innerWidth);
-    // console.log(window.innerHeight);
-
-    const responsiveX = window.innerWidth / x;
-    const responsiveY = window.innerHeight / y;
-
-    const finalX = responsiveX.toFixed(4);
-    const finalY = responsiveY.toFixed(4);
-
-    console.log(`X: ${finalX}`);
-    console.log(`Y: ${finalY}`);
-
-    setX(finalX);
-
-    if (between(finalX, 0.0159, 0.0165)) {
-      alert("You found walding");
-    }
+    console.log("X", x);
+    console.log("Y", y);
   };
   return (
     <>
