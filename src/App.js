@@ -5,13 +5,12 @@ import { Home } from "./components/Home";
 import { useState } from "react";
 
 function App() {
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
   return (
     <div className="w-full h-screen flex flex-col justify-between">
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="game" element={<Game innerHeight={innerHeight} />} />
+          <Route path="game" element={<Game />} />
         </Routes>
       </Router>
     </div>
