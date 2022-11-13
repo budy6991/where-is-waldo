@@ -7,16 +7,30 @@ import { db } from "../firebase-config";
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 
 export const Game = () => {
-  const [waldoCoordinates, setWaldoCoordinates] = useState({});
+  const [Waldo, setWaldo] = useState({});
+  const [Odlaw, setOdlaw] = useState({});
+  const [Magician, setMagician] = useState({});
 
   const waldoCoordsRef = doc(db, "coordinates", "waldoCoordinates");
+  const odlawCoordsRef = doc(db, "coordinates", "odlawCoordinates");
+  const magicianCoordsRef = doc(db, "coordinates", "magicianCoordinates");
 
   useEffect(() => {
     const getWaldoCoords = async () => {
       const data = await getDoc(waldoCoordsRef);
-      return setWaldoCoordinates(data.data());
+      return setWaldo(data.data());
+    };
+    const getOdlawCoords = async () => {
+      const data = await getDoc(odlawCoordsRef);
+      return setOdlaw(data.data());
+    };
+    const getMagicianCoords = async () => {
+      const data = await getDoc(magicianCoordsRef);
+      return setMagician(data.data());
     };
     getWaldoCoords();
+    getOdlawCoords();
+    getMagicianCoords();
   }, []);
 
   const between = (x, min, max) => {
@@ -27,9 +41,6 @@ export const Game = () => {
     alert("You found Waldo");
   };
 
-  //If the click equals to waldoCoordinates.
-  //Give margin to the waldoCoordinates.
-
   const handleCoordinates = (e) => {
     const x = Math.floor((e.clientX / e.target.width) * 100);
     const y = Math.floor(
@@ -37,7 +48,15 @@ export const Game = () => {
         100
     );
 
-    console.log(waldoCoordinates.yCoor);
+    console.log(x, y);
+
+    if (x === Waldo.xCoor && y === Waldo.yCoor) {
+      alert("You found Waldo");
+    } else if (x === Odlaw.xCoor && y === Odlaw.yCoor) {
+      alert("You found Odlaw");
+    } else if (x === Magician.xCoor && y === Magician.yCoor) {
+      alert("You found the Magician");
+    }
   };
 
   return (
