@@ -41,14 +41,14 @@ export const Game = () => {
     alert("You found Waldo");
   };
 
+  //Set score + 1 for every character that was found, if score === 3, then we stop the timer and prompt for the user to enter his name, and send it to the database so then we display it at the beginning
+
   const handleCoordinates = (e) => {
     const x = Math.floor((e.clientX / e.target.width) * 100);
     const y = Math.floor(
       ((e.clientY - e.target.getBoundingClientRect().top) / e.target.height) *
         100
     );
-
-    console.log(x, y);
 
     if (x === Waldo.xCoor && y === Waldo.yCoor) {
       alert("You found Waldo");
