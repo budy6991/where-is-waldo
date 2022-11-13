@@ -8,7 +8,9 @@ import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 
 export const Game = () => {
   const [waldoCoordinates, setWaldoCoordinates] = useState({});
+
   const waldoCoordsRef = doc(db, "coordinates", "waldoCoordinates");
+
   useEffect(() => {
     const getWaldoCoords = async () => {
       const data = await getDoc(waldoCoordsRef);
@@ -27,18 +29,20 @@ export const Game = () => {
     alert("You found Waldo");
   };
 
-  const showCoordinates = (e) => {
-    const x = Math.floor((e.clientX / window.innerWidth) * 100);
-    const y = Math.floor((e.clientY / window.innerHeight) * 100);
-    console.log("X", x);
-    console.log("Y", y);
+  const handleCoordinates = (e) => {
+    const x = Math.floor((e.clientX / e.target.width) * 100);
+    const y = Math.floor(
+      ((e.clientY - e.target.getBoundingClientRect().top) / e.target.height) *
+        100
+    );
+    console.log("x =" + x + "y = " + y);
   };
 
   return (
     <>
       <Header />
-      <div onClick={showCoordinates} className="relative">
-        <img src={waldo} className="w-full h-full" />
+      <div onClick={handleCoordinates} className="relative">
+        <img src={waldo} className="w-full h-auto" />
       </div>
       <Footer />
     </>
