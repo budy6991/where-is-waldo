@@ -17,6 +17,9 @@ export const Game = () => {
   const [Odlaw, setOdlaw] = useState({});
   const [Magician, setMagician] = useState({});
   const [userClick, setUserClick] = useState({});
+  const [waldoFound, setWaldoFound] = useState(false);
+  const [odlawFound, setOdlawFound] = useState(false);
+  const [magicianFound, setMagicianFound] = useState(false);
 
   const waldoCoordsRef = doc(db, "coordinates", "waldoCoordinates");
   const odlawCoordsRef = doc(db, "coordinates", "odlawCoordinates");
@@ -41,34 +44,25 @@ export const Game = () => {
     getMagicianCoords();
   }, []);
 
-  useEffect(() => {
-    onSnapshot(characterCollection, (snapshot) => {
-      snapshot.docs.map((doc) => {
-        console.log(doc.data().found);
-      });
-    });
-  }, []);
-
-  const foundCharacter = async (ref) => {
-    try {
-      await updateDoc(ref, { found: true });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("Updated");
+  const checkForWin = () => {
+    if (waldoFound === true && odlawFound === true && magicianFound === true) {
+      alert("you won the game");
     }
   };
 
   const compareCoordinates = async () => {
     if (userClick.x === Waldo.xCoor && userClick.y === Waldo.yCoor) {
-      foundCharacter(waldoCoordsRef);
+      setWaldoFound(true);
+      alert("found waldo");
     } else if (userClick.x === Odlaw.xCoor && userClick.y === Odlaw.yCoor) {
-      foundCharacter(odlawCoordsRef);
+      setOdlawFound(true);
+      alert("Found odlaw");
     } else if (
       userClick.x === Magician.xCoor &&
       userClick.y === Magician.yCoor
     ) {
-      foundCharacter(magicianCoordsRef);
+      setMagicianFound(true);
+      alert("Found magician");
     }
   };
 
@@ -80,6 +74,7 @@ export const Game = () => {
     );
     setUserClick({ x, y });
     compareCoordinates();
+    checkForWin()
   };
 
   return (
