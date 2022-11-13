@@ -4,12 +4,19 @@ import waldo from "../assets/where-is-waldo.jpg";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { db } from "../firebase-config";
-import { collection, getDocs, getDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 
 export const Game = () => {
   const [Waldo, setWaldo] = useState({});
   const [Odlaw, setOdlaw] = useState({});
   const [Magician, setMagician] = useState({});
+  const [userClick, setUserClick] = useState({});
 
   const waldoCoordsRef = doc(db, "coordinates", "waldoCoordinates");
   const odlawCoordsRef = doc(db, "coordinates", "odlawCoordinates");
@@ -33,15 +40,32 @@ export const Game = () => {
     getMagicianCoords();
   }, []);
 
+  const foundCharacter = async (ref) => {
+    try {
+      await updateDoc(ref, { found: true });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log("Updated");
+    }
+  };
+
+  const compareCoordinates = async () => {
+    if (userClick.x === Waldo.xCoor && userClick.y === Waldo.yCoor) {
+      foundCharacter(waldoCoordsRef);
+    } else if (userClick.x === Odlaw.xCoor && userClick.y === Odlaw.yCoor) {
+      foundCharacter(odlawCoordsRef);
+    } else if (
+      userClick.x === Magician.xCoor &&
+      userClick.y === Magician.yCoor
+    ) {
+      foundCharacter(magicianCoordsRef);
+    }
+  };
+
   const between = (x, min, max) => {
     return x >= min && x <= max;
   };
-
-  const showMarker = () => {
-    alert("You found Waldo");
-  };
-
-  //Set score + 1 for every character that was found, if score === 3, then we stop the timer and prompt for the user to enter his name, and send it to the database so then we display it at the beginning
 
   const handleCoordinates = (e) => {
     const x = Math.floor((e.clientX / e.target.width) * 100);
@@ -49,15 +73,11 @@ export const Game = () => {
       ((e.clientY - e.target.getBoundingClientRect().top) / e.target.height) *
         100
     );
-
-    if (x === Waldo.xCoor && y === Waldo.yCoor) {
-      alert("You found Waldo");
-    } else if (x === Odlaw.xCoor && y === Odlaw.yCoor) {
-      alert("You found Odlaw");
-    } else if (x === Magician.xCoor && y === Magician.yCoor) {
-      alert("You found the Magician");
-    }
+    setUserClick({ x, y });
+    compareCoordinates();
   };
+
+  console.log(userClick);
 
   return (
     <>
