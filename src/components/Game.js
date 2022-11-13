@@ -5,11 +5,11 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { db } from "../firebase-config";
 import {
-  collection,
-  getDocs,
   getDoc,
   doc,
   updateDoc,
+  onSnapshot,
+  collection,
 } from "firebase/firestore";
 
 export const Game = () => {
@@ -21,6 +21,7 @@ export const Game = () => {
   const waldoCoordsRef = doc(db, "coordinates", "waldoCoordinates");
   const odlawCoordsRef = doc(db, "coordinates", "odlawCoordinates");
   const magicianCoordsRef = doc(db, "coordinates", "magicianCoordinates");
+  const characterCollection = collection(db, "coordinates");
 
   useEffect(() => {
     const getWaldoCoords = async () => {
@@ -38,6 +39,14 @@ export const Game = () => {
     getWaldoCoords();
     getOdlawCoords();
     getMagicianCoords();
+  }, []);
+
+  useEffect(() => {
+    onSnapshot(characterCollection, (snapshot) => {
+      snapshot.docs.map((doc) => {
+        console.log(doc.data().found);
+      });
+    });
   }, []);
 
   const foundCharacter = async (ref) => {
@@ -63,10 +72,6 @@ export const Game = () => {
     }
   };
 
-  const between = (x, min, max) => {
-    return x >= min && x <= max;
-  };
-
   const handleCoordinates = (e) => {
     const x = Math.floor((e.clientX / e.target.width) * 100);
     const y = Math.floor(
@@ -76,8 +81,6 @@ export const Game = () => {
     setUserClick({ x, y });
     compareCoordinates();
   };
-
-  console.log(userClick);
 
   return (
     <>
