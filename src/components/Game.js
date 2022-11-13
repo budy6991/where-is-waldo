@@ -14,12 +14,10 @@ export const Game = () => {
   useEffect(() => {
     const getWaldoCoords = async () => {
       const data = await getDoc(waldoCoordsRef);
-      setWaldoCoordinates(data.data());
+      return setWaldoCoordinates(data.data());
     };
     getWaldoCoords();
   }, []);
-
-  console.log(waldoCoordinates);
 
   const between = (x, min, max) => {
     return x >= min && x <= max;
@@ -29,13 +27,17 @@ export const Game = () => {
     alert("You found Waldo");
   };
 
+  //If the click equals to waldoCoordinates.
+  //Give margin to the waldoCoordinates.
+
   const handleCoordinates = (e) => {
     const x = Math.floor((e.clientX / e.target.width) * 100);
     const y = Math.floor(
       ((e.clientY - e.target.getBoundingClientRect().top) / e.target.height) *
         100
     );
-    console.log("x =" + x + "y = " + y);
+
+    console.log(waldoCoordinates.yCoor);
   };
 
   return (
