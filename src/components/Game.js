@@ -43,17 +43,17 @@ export const Game = () => {
     getWaldoCoords();
     getOdlawCoords();
     getMagicianCoords();
+    setStart(true);
   }, []);
 
   useEffect(() => {
-    let interval = null;
-
     if (start) {
-      interval = setInterval(() => {
+      const intervalId = setInterval(() => {
         setTime((prevTime) => prevTime + 10);
       }, 10);
-    } else {
-      clearInterval(interval);
+      return () => {
+        clearInterval(intervalId);
+      };
     }
   }, [start]);
 
@@ -71,19 +71,28 @@ export const Game = () => {
       }
     };
 
+    const checkWin = () => {
+      if (waldoFound && odlawFound && magicianFound) {
+        setStart(false);
+        setStart((state) => {
+          console.log("start got to:" + state);
+          return state;
+        });
+      } else {
+        console.log("Not all characters found");
+      }
+    };
+
     if (!Object.keys(userClick).length) {
       console.log("No user Click");
     } else {
       checkCoordinates();
+      checkWin();
       console.log(
         `Waldo Found ${waldoFound}, Odlaw Found: ${odlawFound} , Magician Found ${magicianFound}`
       );
     }
   }, [userClick]);
-
-  useEffect(() => {
-    // Listen for change onCharacters, checks for win and stop timer.
-  }, []);
 
   useEffect(() => {
     //Listen for change on timer, takes time value, and prop from the user.
@@ -95,7 +104,9 @@ export const Game = () => {
       ((e.clientY - e.target.getBoundingClientRect().top) / e.target.height) *
         100
     );
-    setStart(true);
+    setWaldoFound(true);
+    setMagicianFound(true);
+    setOdlawFound(true);
     return setUserClick({ x, y });
   };
 
