@@ -6,7 +6,7 @@ import { Home } from "./components/Home";
 function App() {
   return (
     <div className="w-full h-screen flex flex-col justify-between">
-      <Router>
+      <Router basename="/where-is-waldo">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="game" element={<Game />} />
