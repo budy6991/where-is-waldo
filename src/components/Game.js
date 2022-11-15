@@ -64,7 +64,8 @@ export const Game = () => {
   }, [start]);
 
   useEffect(() => {
-    const checkCoordinates = () => {
+    console.log("user click" + userClick.x + userClick.y);
+    const checkCoordinates = async () => {
       if (Waldo.xCoor === userClick.x && Waldo.yCoor === userClick.y) {
         setWaldoFound(true);
       } else if (Odlaw.xCoor === userClick.x && Odlaw.yCoor === userClick.y) {
@@ -76,13 +77,16 @@ export const Game = () => {
         setMagicianFound(true);
       }
     };
+    checkCoordinates();
+  }, [userClick]);
 
+  useEffect(() => {
     const checkWin = () => {
       if (waldoFound && odlawFound && magicianFound) {
         setStart(false);
-        setStart((state) => {
-          return state;
-        });
+        // setStart((state) => {
+        //   return state;
+        // });
         setScore({
           hours: ("0" + Math.floor((time / 60000) % 60)).slice(-2),
           minutes: ("0" + Math.floor((time / 1000) % 60)).slice(-2),
@@ -93,21 +97,12 @@ export const Game = () => {
         console.log("Not all characters found");
       }
     };
-
     if (!Object.keys(userClick).length) {
       console.log("No user Click");
     } else {
-      checkCoordinates();
       checkWin();
-      console.log(
-        `Waldo Found ${waldoFound}, Odlaw Found: ${odlawFound} , Magician Found ${magicianFound}`
-      );
     }
-  }, [userClick]);
-
-  useEffect(() => {
-    //Listen for change on timer, takes time value, and prop from the user.
-  }, []);
+  }, [waldoFound, magicianFound, odlawFound]);
 
   const handleCoordinates = (e) => {
     const x = Math.floor((e.clientX / e.target.width) * 100);
@@ -116,12 +111,17 @@ export const Game = () => {
         100
     );
 
-    return setUserClick({ x, y });
+    setUserClick({ x, y });
   };
 
   return (
     <>
-      <Header time={time} />
+      <Header
+        time={time}
+        waldo={waldoFound}
+        odlaw={odlawFound}
+        magician={magicianFound}
+      />
       <div onClick={handleCoordinates} className="relative">
         <img src={waldo} className="w-full h-auto" />
       </div>
