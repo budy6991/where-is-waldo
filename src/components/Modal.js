@@ -1,4 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { db } from "../firebase-config";
+import { useNavigate } from "react-router-dom";
+import {
+  getDoc,
+  doc,
+  updateDoc,
+  onSnapshot,
+  collection,
+  addDoc,
+} from "firebase/firestore";
 
 const MODAL_STYLES = {
   position: "fixed",
@@ -21,12 +31,25 @@ const OVERLAY_STYLES = {
 
 export const Modal = ({ open, time }) => {
   const [name, setName] = useState("");
+  const navigate = useNavigate();
+  const scoreCollectionRef = collection(db, "score");
 
   const handleName = (e) => {
     setName(e.target.value);
   };
-  const handleSubmit = () => {
-    //Takes the name and the score, and ships it to Firebase
+
+  const addScore = async () => {
+    try {
+      await addDoc(scoreCollectionRef, {
+        name: name,
+        score: `${time.hours}:${time.minutes}:${time.seconds}`,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      navigate("/");
+      window.location.reload(true);
+    }
   };
 
   if (!open) return null;
@@ -36,7 +59,7 @@ export const Modal = ({ open, time }) => {
       <div style={OVERLAY_STYLES}></div>
       <div
         style={MODAL_STYLES}
-        className="flex flex-col p-9 items-center gap-10"
+        className="flex flex-col p-9 items-center gap-10 rounded-xl"
       >
         <h1>Congratulations! You found all the characters</h1>
         <div>
@@ -50,14 +73,14 @@ export const Modal = ({ open, time }) => {
               onChange={handleName}
               type="text"
               placeholder="Enter your name"
-              className="text-center border-2 border-black rounded-full p-2"
+              className="text-center border-2 border-red-600 rounded-full p-2"
             ></input>
           </form>
         </div>
 
         <button
           className="bg-red-600 p-2 rounded-xl text-white transition-all hover:scale-125"
-          onClick={handleSubmit}
+          onClick={addScore}
         >
           Submit
         </button>
