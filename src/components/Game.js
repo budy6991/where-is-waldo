@@ -115,9 +115,7 @@ export const Game = () => {
       ((e.clientY - e.target.getBoundingClientRect().top) / e.target.height) *
         100
     );
-    setWaldoFound(true);
-    setMagicianFound(true);
-    setOdlawFound(true);
+
     return setUserClick({ x, y });
   };
 
