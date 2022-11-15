@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import waldo from "../assets/where-is-waldo.jpg";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { db } from "../firebase-config";
+import { Modal } from "./Modal";
 import {
   getDoc,
   doc,
@@ -22,6 +24,10 @@ export const Game = () => {
   const [magicianFound, setMagicianFound] = useState(false);
   const [time, setTime] = useState(0);
   const [start, setStart] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [score, setScore] = useState(null);
+
+  const navigate = useNavigate();
 
   const waldoCoordsRef = doc(db, "coordinates", "waldoCoordinates");
   const odlawCoordsRef = doc(db, "coordinates", "odlawCoordinates");
@@ -75,9 +81,14 @@ export const Game = () => {
       if (waldoFound && odlawFound && magicianFound) {
         setStart(false);
         setStart((state) => {
-          console.log("start got to:" + state);
           return state;
         });
+        setScore({
+          hours: ("0" + Math.floor((time / 60000) % 60)).slice(-2),
+          minutes: ("0" + Math.floor((time / 1000) % 60)).slice(-2),
+          seconds: ("0" + ((time / 10) % 1000)).slice(-2),
+        });
+        setIsOpen(true);
       } else {
         console.log("Not all characters found");
       }
@@ -116,6 +127,7 @@ export const Game = () => {
       <div onClick={handleCoordinates} className="relative">
         <img src={waldo} className="w-full h-auto" />
       </div>
+      <Modal open={isOpen} time={score} />
       <Footer />
     </>
   );
