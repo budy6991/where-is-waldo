@@ -27,8 +27,6 @@ export const Game = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [score, setScore] = useState(null);
 
-  const navigate = useNavigate();
-
   const waldoCoordsRef = doc(db, "coordinates", "waldoCoordinates");
   const odlawCoordsRef = doc(db, "coordinates", "odlawCoordinates");
   const magicianCoordsRef = doc(db, "coordinates", "magicianCoordinates");
@@ -77,16 +75,17 @@ export const Game = () => {
         setMagicianFound(true);
       }
     };
-    checkCoordinates();
+    if (!Object.keys(userClick).length) {
+      console.log("No user Click");
+    } else {
+      checkCoordinates();
+    }
   }, [userClick]);
 
   useEffect(() => {
     const checkWin = () => {
       if (waldoFound && odlawFound && magicianFound) {
         setStart(false);
-        // setStart((state) => {
-        //   return state;
-        // });
         setScore({
           hours: ("0" + Math.floor((time / 60000) % 60)).slice(-2),
           minutes: ("0" + Math.floor((time / 1000) % 60)).slice(-2),
@@ -97,11 +96,7 @@ export const Game = () => {
         console.log("Not all characters found");
       }
     };
-    if (!Object.keys(userClick).length) {
-      console.log("No user Click");
-    } else {
-      checkWin();
-    }
+    checkWin();
   }, [waldoFound, magicianFound, odlawFound]);
 
   const handleCoordinates = (e) => {
@@ -110,7 +105,6 @@ export const Game = () => {
       ((e.clientY - e.target.getBoundingClientRect().top) / e.target.height) *
         100
     );
-
     setUserClick({ x, y });
   };
 

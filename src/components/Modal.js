@@ -39,17 +39,30 @@ export const Modal = ({ open, time }) => {
   };
 
   const addScore = async () => {
-    try {
-      await addDoc(scoreCollectionRef, {
-        name: name,
-        score: `${time.hours}:${time.minutes}:${time.seconds}`,
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      navigate("/");
-      window.location.reload(true);
-    }
+    if (!name) {
+      try {
+        await addDoc(scoreCollectionRef, {
+          name: "Anonymous",
+          score: `${time.hours}:${time.minutes}:${time.seconds}`,
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        navigate("/");
+        window.location.reload(true);
+      }
+    } else
+      try {
+        await addDoc(scoreCollectionRef, {
+          name: name,
+          score: `${time.hours}:${time.minutes}:${time.seconds}`,
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        navigate("/");
+        window.location.reload(true);
+      }
   };
 
   if (!open) return null;
